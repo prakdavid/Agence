@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -69,16 +70,21 @@ class Property
     /**
      * @ORM\Column(type="boolean", options={"default": false})
      */
-    private $sold;
+    private $sold = false;
 
     /**
      * @ORM\Column(type="datetime")
      */
     private $created_at;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $rooms;
+
     public function __construct()
     {
-        // $this.created_at = new \DateTime();
+        $this->created_at = new \DateTime();
     }
 
     public function getId(): ?int
@@ -96,6 +102,13 @@ class Property
         $this->title = $title;
 
         return $this;
+    }
+
+    public function getSlug()
+    {
+        $slugify = new Slugify();
+        return $slugify->slugify($this->title);
+
     }
 
     public function getDescription(): ?string
@@ -226,6 +239,18 @@ class Property
     public function setCreatedAt(\DateTimeInterface $created_at): self
     {
         $this->created_at = $created_at;
+
+        return $this;
+    }
+
+    public function getRooms(): ?int
+    {
+        return $this->rooms;
+    }
+
+    public function setRooms(int $rooms): self
+    {
+        $this->rooms = $rooms;
 
         return $this;
     }

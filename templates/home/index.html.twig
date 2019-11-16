@@ -3,13 +3,24 @@
 {% block title %}Hello HomeController!{% endblock %}
 
 {% block body %}
-<div class="container">
-    <h1>Agence {{ controller_name }}! ✅</h1>
+  <div class="container">
+    <h2>Les derniers biens</h2>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/Users/evan/www/symfony/Agence/src/Controller/HomeController.php'|file_link(0) }}">src/Controller/HomeController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/Users/evan/www/symfony/Agence/templates/home/index.html.twig'|file_link(0) }}">templates/home/index.html.twig</a></code></li>
-    </ul>
-</div>
+    <div class="row flex">
+      {% for property in properties %}
+        <div class="col-3">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">
+                <a href="{{ path('property.show', { slug: property.slug, id: property.id }) }}">{{ property.title }}</a>
+              </h5>
+              <p class="card-text">{{ property.city }} ({{ property.postalCode }})</p>
+              <div class="text-primary">{{ property.price | number_format(0, '', ' ')}} €</div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+  </div>
 {% endblock %}
