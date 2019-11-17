@@ -3,9 +3,10 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Property;
-use App\Form\PropertyType;
+use App\Form\Property\PropertyType;
 use App\Repository\PropertyRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -35,7 +36,7 @@ class AdminPropertyController extends AbstractController
     /**
      * @Route("/admin/property/add", name="admin.property.add")
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @return RedirectResponse|Response
      */
     public function add(Request $request)
     {
@@ -59,6 +60,7 @@ class AdminPropertyController extends AbstractController
     /**
      * @Route("/admin/property/{id}", name="admin.property.edit", methods={"GET", "POST"}   )
      * @param Property $property
+     * @param Request $request
      * @return Response
      */
     public function edit(Property $property, Request $request)
@@ -82,6 +84,8 @@ class AdminPropertyController extends AbstractController
     /**
      * @Route("/admin/property/{id}", name="admin.property.delete", methods={"DELETE"})
      * @param Property $property
+     * @param Request $request
+     * @return RedirectResponse
      */
     public function delete(Property $property, Request $request)
     {

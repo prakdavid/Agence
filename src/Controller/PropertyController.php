@@ -17,8 +17,6 @@ class PropertyController extends AbstractController
     {
         $rep = $this->getDoctrine()->getRepository(Property::class);
         $property = $rep->findAllVisible();
-        dump($property);
-
 
         return $this->render('property/index.html.twig', [
             'controller_name' => 'PropertyController',
@@ -27,6 +25,9 @@ class PropertyController extends AbstractController
 
     /**
      * @Route("/property/{slug}-{id}", name="property.show", requirements={"slug": "[a-z0-9\-]*"})
+     * @param Property $property
+     * @param string $slug
+     * @return Response
      */
     public function show(Property $property, string $slug): Response
     {
@@ -36,12 +37,7 @@ class PropertyController extends AbstractController
                 'slug' => $property->getSlug(),
             ], 301);
         }
-        dump($property);
-/*        $rep = $this->getDoctrine()->getRepository(Property::class);
-        $property = $rep->find($id);*/
-        return $this->render('property/show.html.twig', [
-            'controller_name' => 'PropertyController',
-            'property' => $property,
-        ]);
+
+        return $this->render('property/show.html.twig', compact('property'));
     }
 }
