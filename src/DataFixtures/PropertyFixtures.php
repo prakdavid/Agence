@@ -11,11 +11,8 @@ class PropertyFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        // $product = new Product();
-        // $manager->persist($product);
-
         $faker = Factory::create('fr_FR');
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < 1000; $i++) {
             $property = new Property();
             $property->setTitle($faker->words(4, true))
                 ->setDescription($faker->sentence(10, true))
@@ -23,7 +20,7 @@ class PropertyFixtures extends Fixture
                 ->setBedrooms($faker->numberBetween(1, 9))
                 ->setRooms($faker->numberBetween(2, 10))
                 ->setFloor($faker->numberBetween(0, 40))
-                ->setPrice($faker->numberBetween(10000, 100000000))
+                ->setPrice($faker->numberBetween(10000, 1000000))
                 ->setHeat($faker->numberBetween(0, 2))
                 ->setAdress($faker->address)
                 ->setCity($faker->city)

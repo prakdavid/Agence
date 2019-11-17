@@ -6,6 +6,7 @@ use App\Entity\Property;
 use App\Form\PropertyType;
 use App\Repository\PropertyRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,7 +18,6 @@ class AdminPropertyController extends AbstractController
      */
     private $repository;
 
-
     public function __construct(PropertyRepository $repository)
     {
         $this->repository = $repository;
@@ -26,7 +26,7 @@ class AdminPropertyController extends AbstractController
     /**
      * @Route("/admin", name="admin.property.index")
      */
-    public function index()
+    public function index(): Response
     {
         $properties = $this->repository->findAll();
         return $this->render('admin/property/index.html.twig', compact('properties'));
@@ -35,9 +35,9 @@ class AdminPropertyController extends AbstractController
     /**
      * @Route("/admin/property/add", name="admin.property.add")
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @return RedirectResponse|Response
      */
-    public function add(Request $request)
+    public function add(Request $request): Response
     {
         $property = new Property();
         $form = $this->createForm(PropertyType::class, $property);
@@ -59,9 +59,10 @@ class AdminPropertyController extends AbstractController
     /**
      * @Route("/admin/property/{id}", name="admin.property.edit", methods={"GET", "POST"}   )
      * @param Property $property
+     * @param Request $request
      * @return Response
      */
-    public function edit(Property $property, Request $request)
+    public function edit(Property $property, Request $request): Response
     {
         $form = $this->createForm(PropertyType::class, $property);
         dump($property);
@@ -82,8 +83,10 @@ class AdminPropertyController extends AbstractController
     /**
      * @Route("/admin/property/{id}", name="admin.property.delete", methods={"DELETE"})
      * @param Property $property
+     * @param Request $request
+     * @return RedirectResponse
      */
-    public function delete(Property $property, Request $request)
+    public function delete(Property $property, Request $request): Response
     {
         $token = $request->get('_token');
 
