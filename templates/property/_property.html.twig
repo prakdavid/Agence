@@ -1,0 +1,7 @@
+<div class="card mb-4">
+  <div class="card-body">
+    <h5 class="card-title">{{ property.title }}</h5>
+    <p class="card-text">{{ property.city }} ({{ property.postalCode   }})</p>
+    <a href="{{ path('property.show', {slug: property.slug, id: property.id}) }}" class="btn btn-primary">{{ property.price | number_format(3, ' ', ' ') }} €</a>
+  </div>
+</div>
