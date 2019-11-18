@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Cocur\Slugify\Slugify;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -82,9 +84,15 @@ class Property
      */
     private $rooms;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\PropertyOption", inversedBy="properties")
+     */
+    private $propertyOptions;
+
     public function __construct()
     {
         $this->created_at = new \DateTime();
+        $this->propertyOptions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -251,6 +259,34 @@ class Property
     public function setRooms(int $rooms): self
     {
         $this->rooms = $rooms;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|PropertyOption[]
+     */
+    public function getPropertyOptions(): Collection
+    {
+        return $this->propertyOptions;
+    }
+
+    public function addPropertyOption(PropertyOption $propertyOption): self
+    {
+        if (!$this->propertyOptions->contains($propertyOption)) {
+            $this->propertyOptions[] = $propertyOption;
+            $propertyOption->addProperty($this);
+        }
+
+        return $this;
+    }
+
+    public function removePropertyOption(PropertyOption $propertyOption): self
+    {
+        if ($this->propertyOptions->contains($propertyOption)) {
+            $this->propertyOptions->removeElement($propertyOption);
+            $propertyOption->removeProperty($this);
+        }
 
         return $this;
     }
