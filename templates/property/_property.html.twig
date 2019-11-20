@@ -1,5 +1,8 @@
 <div class="card mb-4">
   <div class="card-body">
+    {% if property.imageName %}
+      <img src="{{ vich_uploader_asset(property, 'imageFile') | imagine_filter('my_thumb') }}" alt="" style="width: 100%; height: auto;">
+    {% endif %}
     <h5 class="card-title">{{ property.title }}</h5>
     <p class="card-text">{{ property.city }} ({{ property.postalCode }})</p>
     <p class="card-text">{{ property.surface }} m<sup>2</sup></p>

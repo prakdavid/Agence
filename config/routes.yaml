@@ -2,6 +2,9 @@
 #    path: /
 #    controller: App\Controller\DefaultController::index
 
+_liip_imagine:
+  resource: "@LiipImagineBundle/Resources/config/routing.yaml"
+
 Home:
   path: /
   controller: App\Controller\HomeController::index

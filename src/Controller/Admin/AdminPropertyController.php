@@ -40,6 +40,7 @@ class AdminPropertyController extends AbstractController
     public function add(Request $request): Response
     {
         $property = new Property();
+
         $form = $this->createForm(PropertyType::class, $property);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -65,7 +66,7 @@ class AdminPropertyController extends AbstractController
     public function edit(Property $property, Request $request): Response
     {
         $form = $this->createForm(PropertyType::class, $property);
-        dump($property);
+
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
