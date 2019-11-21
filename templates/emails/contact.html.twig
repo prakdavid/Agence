@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contacter par mail{% endblock %}
+
+{% block body %}
+  Bonjour,
+  Je suis interressé par ce bien.
+  {{ contact.property.title }}
+  {{ contact.message }}
+  Codialement,
+{% endblock %}

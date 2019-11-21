@@ -5,6 +5,9 @@
 {% block body %}
   <div class="jumbotron">
     <div class="container">
+      {% for message in app.flashes('success') %}
+        <div class="alert alert-success">{{ message }}</div>
+      {% endfor %}
       <div class="row">
         <div class="col-md-8">
           {% if property.imageName %}
@@ -15,7 +18,10 @@
           <h1>{{ property.title }}</h1>
           <h2>{{ property.rooms }} pièces - {{ property.surface }} m2</h2>
           <div class="text-primary">{{ property.price | number_format(0, '', ' ')}} €</div>
-          <a href="" class="btn btn-primary">Contacter l'agence</a>
+          {{ form_start(form) }}
+          {{ form_widget(form) }}
+          <button type="submit" class="btn btn-primary">Contacter l'agence</button>
+          {{ form_end(form) }}
         </div>
       </div>
     </div>

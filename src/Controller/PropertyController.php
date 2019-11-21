@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Property;
+use App\Entity\Contact;
 use App\Entity\PropertySearch;
+use App\Form\ContactType;
 use App\Form\PropertySearchType;
+use App\Notification\ContactNotification;
 use App\Repository\PropertyRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,9 +23,12 @@ class PropertyController extends AbstractController
      */
     private $repository;
 
-    public function __construct(PropertyRepository $repository)
+    private $contactNotification;
+
+    public function __construct(PropertyRepository $repository, ContactNotification $contactNotification)
     {
         $this->repository = $repository;
+        $this->contactNotification = $contactNotification;
     }
 
     /**
@@ -52,10 +58,22 @@ class PropertyController extends AbstractController
      * @Route("/property/{slug}-{id}", name="property.show", requirements={"slug": "[a-z0-9\-]*"})
      * @param Property $property
      * @param string $slug
+     * @param Request $request
      * @return Response
      */
-    public function show(Property $property, string $slug): Response
+    public function show(Property $property, string $slug, Request $request): Response
     {
+        $contact = new Contact();
+        $contact->setProperty($property);
+        $form = $this->createForm(ContactType::class, $contact);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            dump($contact);
+            $this->contactNotification->notify($contact);
+            $this->addFlash('success', 'Email envoyé.');
+        }
+
         if ($property->getSlug() !== $slug) {
             $this->redirectToRoute('property.show', [
                 'id' => $property->getId(),
@@ -65,6 +83,7 @@ class PropertyController extends AbstractController
 
         return $this->render('property/show.html.twig', [
             'property' => $property,
+            'form' => $form->createView(),
         ]);
     }
 }
